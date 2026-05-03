@@ -1,14 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
+# Load the hidden variables from the .env file
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'home_needs_secret_key' # Required for sending success/error messages
+app.secret_key = 'home_needs_secret_key' 
 
 # AWS RDS Connection Configuration
 db_config = {
     'host': 'database-1.cwjkoeyeihte.us-east-1.rds.amazonaws.com',
     'user': 'angel26',
-    'password': 'YOUR_PASSWORD_HERE', # Remember to swap this out!
+    'password': os.environ.get('DB_PASSWORD'), # securely fetches the password!
     'database': 'HomeNeedsService'
 }
 
