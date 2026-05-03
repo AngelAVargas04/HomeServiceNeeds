@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold" style="color: #7d5ba6;">Your Home's Best Friend.</h1>
+        <p class="lead text-muted mb-4">
+            Connecting you with trusted, verified local professionals for plumbing, tech support, cleaning, and more. Fast, safe, and reliable service for your everyday needs.
+        </p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="/browse" class="btn btn-lg text-white px-4 me-md-2" style="background-color: #7d5ba6;">Find a Service</a>
+            <a href="/register" class="btn btn-outline-secondary btn-lg px-4">Become a Provider</a>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <img src="https://tse3.mm.bing.net/th/id/OIP.O4ByY7ZjdHAF3RC-y2b6RAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Home Services" class="img-fluid" style="max-height: 350px;">
+    </div>
+</div>
+
+<div class="row mt-5 pt-4 text-center border-top">
+    <h2 class="mb-4" style="color: #333;">How It Works</h2>
+    
+    <div class="col-md-4 mb-3">
+        <div class="p-3">
+            <h4 style="color: #7d5ba6;">1. Browse</h4>
+            <p class="text-muted">Search through our categorized list of verified service providers in your local area.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="p-3">
+            <h4 style="color: #7d5ba6;">2. Book</h4>
+            <p class="text-muted">Select a professional, review their hourly rates, and secure your booking instantly.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="p-3">
+            <h4 style="color: #7d5ba6;">3. Relax</h4>
+            <p class="text-muted">Experience top-tier service. Leave a review afterward to help the community.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

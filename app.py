@@ -26,7 +26,23 @@ def get_db_connection():
 @app.route('/')
 def index():
     """The main landing page."""
-    return render_template('layout.html')
+    return render_template('index.html')
+
+@app.route('/browse')
+def browse():
+    """Fetches service categories from the database and displays them."""
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    # Fetch all available categories
+    cursor.execute("SELECT * FROM S_Categories")
+    all_categories = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    # Pass the categories list to the HTML template
+    return render_template('browse.html', categories=all_categories)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

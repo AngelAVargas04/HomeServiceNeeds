@@ -1,18 +1,41 @@
 {% extends "layout.html" %}
+
 {% block content %}
-<h2>Available Service Providers</h2>
-<div class="row">
-    {% for p in providers %}
-    <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 style="color: #7d5ba6; font-weight: bold;">Browse Services</h2>
+        <p class="text-muted">Find the right professional for your home.</p>
+    </div>
+</div>
+
+<div class="row mb-5 justify-content-center">
+    <div class="col-md-8">
+        <div class="input-group shadow-sm">
+            <input type="text" class="form-control form-control-lg border-0" placeholder="What do you need help with? (e.g., Plumbing, Tech)">
+            <button class="btn text-white px-4" style="background-color: #7d5ba6;" type="button">Search</button>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    
+    {% for category in categories %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 text-center py-4">
             <div class="card-body">
-                <h5 class="card-title">{{ p.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ p.service }}</h6>
-                <p class="card-text">Location: {{ p.location }}</p>
-                <p class="fw-bold" style="color: #967bb6;">${{ p.rate }}/hr</p> <button class="btn btn-outline-dark">Book Now</button>
+                <div class="display-4 mb-3">✨</div> <h5 class="card-title fw-bold" style="color: #333;">{{ category.ServiceName }}</h5>
+                <p class="card-text text-muted mb-4">Professional {{ category.ServiceName | lower }} services.</p>
+                
+                <a href="#" class="btn btn-outline-secondary w-75">View Providers</a>
             </div>
         </div>
     </div>
+    
+    {% else %}
+    <div class="col-12 text-center mt-5">
+        <h5 class="text-muted">No service categories available yet. Check back soon!</h5>
+    </div>
     {% endfor %}
+
 </div>
 {% endblock %}

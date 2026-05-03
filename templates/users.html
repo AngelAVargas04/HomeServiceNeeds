@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeNeedsService - Registered Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #0056b3;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .verified-yes {
+            color: green;
+            font-weight: bold;
+        }
+        .verified-no {
+            color: orange;
+            font-weight: bold;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .messages {
+            color: #28a745;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Registered Users Dashboard</h2>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Full Name</th>
+                    <th>Verified Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.UserID }}</td>
+                    <td>{{ user.FullName }}</td>
+                    <td class="{% if user.Verified == 'Yes' %}verified-yes{% else %}verified-no{% endif %}">
+                        {{ user.Verified }}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center;">No users registered yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="/register" class="back-link">← Back to Registration</a>
+    </div>
+
+</body>
+</html>
