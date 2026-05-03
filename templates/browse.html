@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Available Service Providers</h2>
+<div class="row">
+    {% for p in providers %}
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ p.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ p.service }}</h6>
+                <p class="card-text">Location: {{ p.location }}</p>
+                <p class="fw-bold" style="color: #967bb6;">${{ p.rate }}/hr</p> <button class="btn btn-outline-dark">Book Now</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
