@@ -93,6 +93,9 @@
                     <th>User ID</th>
                     <th>Full Name</th>
                     <th>Verified Status</th>
+                    <th>Admin Action</th>
+                    <th>Account</th>
+                    <th>Deletes</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,10 +106,25 @@
                     <td class="{% if user.Verified == 'Yes' %}verified-yes{% else %}verified-no{% endif %}">
                         {{ user.Verified }}
                     </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('update_user_verification', user_id=user.UserID) }}">
+                            <select name="verified">
+                                <option value="Yes" {% if user.Verified == 'Yes' %}selected{% endif %}>Yes</option>
+                                <option value="No" {% if user.Verified == 'No' %}selected{% endif %}>No</option>
+                            </select>
+                            <button type="submit">Save</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('account', user_id=user.UserID) }}" class="btn btn-primary">Open Account</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('admin_delete_user', user_id=user.UserID) }}"style="color: red; font-weight: bold;">Delete</a>
+                    </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="3" style="text-align: center;">No users registered yet.</td>
+                    <td colspan="6" style="text-align: center;">No users registered yet.</td>
                 </tr>
                 {% endfor %}
             </tbody>

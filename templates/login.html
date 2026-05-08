@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 style="color: #7d5ba6; font-weight: bold;">Login</h2>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-warning">
+                            {% for message in messages %}
+                                <p class="mb-0">{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <p class="text-muted">
+                    Enter the full name connected to your existing account.
+                </p>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Full Name</label>
+                        <input type="text"
+                               id="full_name"
+                               name="full_name"
+                               class="form-control"
+                               placeholder="e.g., Jane"
+                               required>
+                    </div>
+
+                    <button type="submit"
+                            class="btn text-white w-100"
+                            style="background-color: #7d5ba6;">
+                        Login
+                    </button>
+                </form>
+
+                <hr>
+
+                <p class="mb-0 text-muted">
+                    No account yet?
+                    <a href="{{ url_for('register') }}">Create an account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

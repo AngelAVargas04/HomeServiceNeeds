@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <h2 style="color: #7d5ba6; font-weight: bold;">Account</h2>
+
+                <p class="mb-1"><strong>Name:</strong> {{ user.FullName }}</p>
+                <p class="mb-1"><strong>User ID:</strong> {{ user.UserID }}</p>
+                <p class="mb-3">
+                    <strong>Verified:</strong>
+                    {% if user.Verified == "Yes" %}
+                        <span class="text-success fw-bold">Yes</span>
+                    {% else %}
+                        <span class="text-warning fw-bold">No</span>
+                    {% endif %}
+                </p>
+
+                {% if provider_profile %}
+                    <p class="mb-0">
+                        <strong>Provider Status:</strong>
+                        <span class="text-success fw-bold">Provider Profile Active</span>
+                    </p>
+                    <p class="mb-0">
+                        <strong>Travel Radius:</strong> {{ provider_profile.TravelR }} miles
+                    </p>
+                {% else %}
+                    <p class="mb-0">
+                        <strong>Provider Status:</strong>
+                        <span class="text-muted">No provider profile yet</span>
+                    </p>
+                {% endif %}
+                <hr>
+                <a href="{{ url_for('delete_own_account') }}" class="btn btn-outline-danger w-100">Delete My Account</a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h4 style="color: #7d5ba6; font-weight: bold;">Current Provider Services</h4>
+
+                {% if provider_services %}
+                    <ul class="list-group list-group-flush">
+                        {% for service in provider_services %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>{{ service.ServiceName }}</span>
+                            <strong>${{ "%.2f"|format(service.HourlyRate) }}/hr</strong>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted mb-0">No provider services have been added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h3 id="provider-setup" style="color: #7d5ba6; font-weight: bold;">Provider Service Setup</h3>
+                <p class="text-muted">
+                    Verified users can add services, travel radius, and hourly rates.
+                </p>
+
+                {% if user.Verified != "Yes" %}
+                    <div class="alert alert-warning">
+                        This user must be verified before provider services can be added.
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('add_provider_service', user_id=user.UserID) }}">
+                    <div class="mb-3">
+                        <label for="travel_radius" class="form-label">Travel Radius in Miles</label>
+                        <input type="number"
+                               id="travel_radius"
+                               name="travel_radius"
+                               class="form-control"
+                               min="1"
+                               value="{{ provider_profile.TravelR if provider_profile else '' }}"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="service_id" class="form-label">Service Category</label>
+                        <select id="service_id" name="service_id" class="form-select" required>
+                            <option value="">Select service</option>
+                            {% for service in services %}
+                            <option value="{{ service.ServiceID }}">{{ service.ServiceName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="hourly_rate" class="form-label">Hourly Rate</label>
+                        <input type="number"
+                               id="hourly_rate"
+                               name="hourly_rate"
+                               class="form-control"
+                               min="1"
+                               step="0.01"
+                               placeholder="Example: 45.00"
+                               required>
+                    </div>
+
+                    <button type="submit"
+                            class="btn text-white w-100"
+                            style="background-color: #7d5ba6;"
+                            {% if user.Verified != "Yes" %}disabled{% endif %}>
+                        Save Provider Service
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
