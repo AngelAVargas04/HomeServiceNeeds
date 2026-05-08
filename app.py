@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'home_needs_secret_key' 
+app.secret_key = os.environ.get("SECRET_KEY", "dev_fallback_secret")
 
 # AWS RDS Connection Configuration
 db_config = {
@@ -122,6 +122,34 @@ def logout():
     flash("You have been logged out.")
     return redirect(url_for('login'))
 
+@app.route('/admin-login', methods=['GET', 'POST'])
+def admin_login():
+    """Simple admin access control using an admin code from .env."""
+    if request.method == 'POST':
+        admin_code = request.form.get('admin_code', '')
+        expected_code = os.environ.get("ADMIN_CODE")
+
+        if not expected_code:
+            flash("Admin code is not configured.")
+            return redirect(url_for("admin_login"))
+
+        if admin_code == expected_code:
+            session["is_admin"] = True
+            flash("Admin access granted.")
+            return redirect(url_for("users"))
+
+        flash("Invalid admin code.")
+        return redirect(url_for("admin_login"))
+
+    return render_template("admin_login.html")
+
+
+@app.route('/admin-logout')
+def admin_logout():
+    """Remove admin access only."""
+    session.pop("is_admin", None)
+    flash("Admin access removed.")
+    return redirect(url_for("index"))
 
 @app.route('/account')
 def account_redirect():
@@ -524,11 +552,15 @@ def register():
 
 @app.route('/users')
 def users():
-    """Fetches and displays all registered users from the database."""
+    """Admin dashboard for registered users."""
+
+    if not session.get("is_admin"):
+        flash("Admin access required.")
+        return redirect(url_for("admin_login"))
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True) # Returns rows as easy-to-read dictionaries
     
-    cursor.execute("SELECT * FROM User")
+    cursor.execute("SELECT * FROM `User`")
     all_users = cursor.fetchall()
     
     cursor.close()
@@ -538,6 +570,9 @@ def users():
 
 @app.route('/users/<int:user_id>/verify', methods=['POST'])
 def update_user_verification(user_id):
+    if not session.get("is_admin"):
+        flash("Admin access required.")
+        return redirect(url_for("admin_login"))
     """Update a user's verification status."""
     verified_status = request.form.get('verified')
 
@@ -568,6 +603,9 @@ def update_user_verification(user_id):
 
 @app.route('/users/<int:user_id>/delete', methods=['GET', 'POST'])
 def admin_delete_user(user_id):
+    if not session.get("is_admin"):
+        flash("Admin access required.")
+        return redirect(url_for("admin_login"))
     """Allow admin/user dashboard to delete a selected account."""
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)

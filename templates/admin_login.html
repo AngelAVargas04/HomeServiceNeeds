@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 style="color: #7d5ba6; font-weight: bold;">Admin Login</h2>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-warning">
+                            {% for message in messages %}
+                                <p class="mb-0">{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <p class="text-muted">
+                    Enter the admin access code to manage user verification and deletion.
+                </p>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="admin_code" class="form-label">Admin Code</label>
+                        <input type="password"
+                               id="admin_code"
+                               name="admin_code"
+                               class="form-control"
+                               required>
+                    </div>
+
+                    <button type="submit"
+                            class="btn text-white w-100"
+                            style="background-color: #7d5ba6;">
+                        Enter Admin Dashboard
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

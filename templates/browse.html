@@ -11,16 +11,27 @@
 <div class="row mb-5 justify-content-center">
     <div class="col-md-8">
         <div class="input-group shadow-sm">
-            <input type="text" class="form-control form-control-lg border-0" placeholder="What do you need help with? (e.g., Plumbing, Tech)">
-            <button class="btn text-white px-4" style="background-color: #7d5ba6;" type="button">Search</button>
+            <input type="text"
+                   id="serviceSearch"
+                   class="form-control form-control-lg border-0"
+                   placeholder="What do you need help with? (e.g., Plumbing, Tech)">
+            <button class="btn text-white px-4"
+                    style="background-color: #7d5ba6;"
+                    type="button"
+                    onclick="filterServices()">
+                Search
+            </button>
         </div>
+        <p id="noResultsMessage" class="text-center text-muted mt-3" style="display: none;">
+            No matching services found.
+        </p>
     </div>
 </div>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     
     {% for category in categories %}
-    <div class="col">
+    <div class="col service-card" data-service-name="{{ category.ServiceName | lower }}">
         <div class="card h-100 shadow-sm border-0 text-center py-4">
             <div class="card-body">
                 <div class="display-4 mb-3">✨</div> <h5 class="card-title fw-bold" style="color: #333;">{{ category.ServiceName }}</h5>
@@ -38,4 +49,29 @@
     {% endfor %}
 
 </div>
+<script>
+function filterServices() {
+    const searchValue = document.getElementById("serviceSearch").value.toLowerCase().trim();
+    const cards = document.querySelectorAll(".service-card");
+    const noResultsMessage = document.getElementById("noResultsMessage");
+
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const serviceName = card.getAttribute("data-service-name");
+
+        if (serviceName.includes(searchValue)) {
+            card.style.display = "";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    noResultsMessage.style.display = visibleCount === 0 ? "block" : "none";
+}
+
+document.getElementById("serviceSearch").addEventListener("input", filterServices);
+</script>
+
 {% endblock %}

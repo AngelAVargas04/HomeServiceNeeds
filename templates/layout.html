@@ -14,6 +14,10 @@
                     <a class="nav-link text-white" href="{{ url_for('bookings') }}">Bookings</a>
                     <a class="nav-link text-white" href="{{ url_for('account_redirect') }}">Account</a>
                     <a class="nav-link text-white" href="{{ url_for('account_redirect') }}#provider-setup">Join as Provider</a>
+                    <a class="nav-link text-white" href="{{ url_for('admin_login') }}">Admin</a>
+                    {% if session.get('is_admin') %}
+                        <a class="nav-link text-white" href="{{ url_for('admin_logout') }}">Admin Logout</a>
+                    {% endif %}
                     <a class="nav-link text-white" href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
                     <a class="nav-link text-white" href="{{ url_for('login') }}">Login</a>
