@@ -219,3 +219,10 @@ __marimo__/
 venv/
 __pycache__/
 *.pyc
+
+.env
+.DS_Store
+venv/
+virt/
+db_backups/
+*.sql
