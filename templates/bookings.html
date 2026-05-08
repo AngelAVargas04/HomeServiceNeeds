@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 style="color: #7d5ba6; font-weight: bold;">Bookings</h2>
+        <p class="text-muted">Current service bookings stored in the database.</p>
+    </div>
+    <a href="{{ url_for('browse') }}" class="btn text-white" style="background-color: #7d5ba6;">
+        New Booking
+    </a>
+</div>
+
+{% if bookings %}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover bg-white">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Provider</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Rate</th>
+                <th>Status</th>
+                <th>Update</th>
+                <th>Review</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.BookingID }}</td>
+                <td>{{ booking.ClientName }}</td>
+                <td>{{ booking.ProviderName }}</td>
+                <td>{{ booking.ServiceName }}</td>
+                <td>{{ booking.Date }}</td>
+                <td>${{ "%.2f"|format(booking.HourlyRate) }}</td>
+                <td>{{ booking.Status }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('update_booking', booking_id=booking.BookingID) }}" class="d-flex gap-2">
+                        <select name="status" class="form-select form-select-sm">
+                            <option value="Pending" {% if booking.Status == "Pending" %}selected{% endif %}>Pending</option>
+                            <option value="Confirmed" {% if booking.Status == "Confirmed" %}selected{% endif %}>Confirmed</option>
+                            <option value="Completed" {% if booking.Status == "Completed" %}selected{% endif %}>Completed</option>
+                            <option value="Cancelled" {% if booking.Status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                    </form>
+                </td>
+                <td>
+                    {% if booking.Status == "Completed" %}
+                        <a href="{{ url_for('review', booking_id=booking.BookingID) }}"
+                            class="btn btn-sm text-white"
+                            style="background-color: #7d5ba6;">
+                            Review
+                        </a>
+                    {% else %}
+                        <span class="text-muted">Complete first</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <h5 class="text-muted">No bookings have been created yet.</h5>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('browse') }}" class="text-decoration-none text-muted">← Back to Services</a>
+
+    <h2 style="color: #7d5ba6; font-weight: bold;" class="mt-2">
+        Reviews for {{ provider.FullName }}
+    </h2>
+
+    <p class="text-muted">
+        Verified status: {{ provider.Verified }} |
+        Travel radius: {{ provider.TravelR }} miles
+    </p>
+</div>
+
+{% if reviews %}
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for review in reviews %}
+    <div class="col">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Rating: {{ review.Rating }}/5
+                </h5>
+
+                <p class="text-muted mb-1">
+                    <strong>Service:</strong> {{ review.ServiceName }}
+                </p>
+
+                <p class="text-muted mb-1">
+                    <strong>Client:</strong> {{ review.ClientName }}
+                </p>
+
+                <p class="text-muted mb-3">
+                    <strong>Date:</strong> {{ review.Date }}
+                </p>
+
+                <p class="mb-0">
+                    "{{ review.Comment }}"
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <h5 class="text-muted">This provider does not have any reviews yet.</h5>
+</div>
+{% endif %}
+{% endblock %}

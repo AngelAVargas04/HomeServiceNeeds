@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('browse') }}" class="text-decoration-none text-muted">← Back to Services</a>
+    <h2 style="color: #7d5ba6; font-weight: bold;" class="mt-2">
+        {{ category.ServiceName }} Providers
+    </h2>
+    <p class="text-muted">Verified providers available for this service.</p>
+</div>
+
+{% if providers %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for provider in providers %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title fw-bold">{{ provider.ProviderName }}</h5>
+
+                <p class="text-success mb-2">Verified Provider</p>
+
+                <p class="mb-1">
+                    <strong>Hourly Rate:</strong> ${{ "%.2f"|format(provider.HourlyRate) }}
+                </p>
+
+                <p class="mb-2">
+                    <strong>Travel Radius:</strong> {{ provider.TravelR }} miles
+                </p>
+
+                <p class="mb-3">
+                    <strong>Rating:</strong>
+                    {% if provider.ReviewCount > 0 %}
+                        {{ provider.AvgRating }}/5
+                        <span class="text-muted">
+                            ({{ provider.ReviewCount }} review{% if provider.ReviewCount != 1 %}s{% endif %})
+                        </span>
+                    {% else %}
+                        <span class="text-muted">No reviews yet</span>
+                    {% endif %}
+                </p>
+
+                <a href="{{ url_for('provider_reviews', provider_id=provider.ProviderID) }}"
+                   class="btn btn-outline-secondary w-100 mb-2">
+                    View Reviews
+                </a>
+
+                <a href="{{ url_for('book', rate_id=provider.RateID) }}"
+                   class="btn text-white w-100"
+                   style="background-color: #7d5ba6;">
+                    Book This Provider
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <h5 class="text-muted">No verified providers are available for this service yet.</h5>
+</div>
+{% endif %}
+{% endblock %}

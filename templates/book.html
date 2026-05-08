@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 style="color: #7d5ba6; font-weight: bold;">Book Service</h2>
+
+                <div class="alert alert-light border mt-3">
+                    <p class="mb-1"><strong>Service:</strong> {{ rate_info.ServiceName }}</p>
+                    <p class="mb-1"><strong>Provider:</strong> {{ rate_info.ProviderName }}</p>
+                    <p class="mb-0"><strong>Rate:</strong> ${{ "%.2f"|format(rate_info.HourlyRate) }} per hour</p>
+                </div>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="client_id" class="form-label">Client Account</label>
+                        <select id="client_id" name="client_id" class="form-select" required>
+                            <option value="">Select client</option>
+                            {% for client in clients %}
+                            <option value="{{ client.UserID }}">{{ client.FullName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="booking_date" class="form-label">Booking Date and Time</label>
+                        <input type="datetime-local"
+                               id="booking_date"
+                               name="booking_date"
+                               class="form-control"
+                               required>
+                    </div>
+
+                    <button type="submit"
+                            class="btn text-white w-100"
+                            style="background-color: #7d5ba6;">
+                        Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
